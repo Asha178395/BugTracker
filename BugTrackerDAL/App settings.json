@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "issuetrackingdbConnectionString": "Data Source =issueserver.database.windows.net;initial catalog =IssueTrackingDB;user id=demouser;password=Syren@1234"
+  }
+}
