@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BugTracker_Web_API</RootNamespace>
+
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BugTrackerBL\BugTrackerBL.csproj" />
+    <ProjectReference Include="..\BugTrackerDAL\BugTrackerDAL.csproj" />
+
   </ItemGroup>
 
 </Project>
