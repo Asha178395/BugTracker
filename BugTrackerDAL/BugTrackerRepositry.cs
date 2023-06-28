@@ -301,6 +301,11 @@ namespace BugTrackerDAL
                 {
                     return result;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
               
          }
         public bool UpdateIssueobject(Issue issue)
@@ -442,7 +447,7 @@ namespace BugTrackerDAL
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while Updating the issue.", ex);
+                throw new Exception(ex.Message);
             }
             return isUpdated;
         }
