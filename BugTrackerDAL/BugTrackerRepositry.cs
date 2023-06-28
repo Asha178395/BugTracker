@@ -129,7 +129,7 @@ namespace BugTrackerDAL
                             s=Convert.ToString(c);
                             a = s.Length;
                             string newstring = "";
-                            for (b = 4; b < a; b--)
+                            for (b = 4; b>a; b--)
                             {
                                 newstring = newstring + "0";
                             }
