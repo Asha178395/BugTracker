@@ -63,6 +63,7 @@ namespace BugTrackerBL
             {
                 throw new Exception(e.Message);
             }
+           return result;
        }
       
            public bool UpdateIssueobjectLogic(Issue issue)
