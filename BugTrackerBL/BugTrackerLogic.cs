@@ -10,6 +10,75 @@ namespace BugTrackerBL
         {
             repositry = new BugTrackerRepositry();
         }
+    
+    public List<Issue> GetIssueLogic(string IssueId)
+    {
+        List<Issue> issues = null;
+        try
+        {
+            issues = repositry.GetIssue(IssueId);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        return issues;
+    }
+    public List<Issue> GetIssuesbyProjectLogic(string ProjectId)
+    {
+        List<Issue> issues = null;
+        try
+        {
+            issues = repositry.GetIssuesbyProject(ProjectId);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        return issues;
+    }
+        public List<Issue> GetIssuesbyTimePeriodLogic(string ProjectId, DateTime FromDate, DateTime ToDate)
+        {
+            List<Issue> issuesList = null;
+            try
+            {
+                issuesList = repositry.GetIssuesbyTimePeriod(ProjectId, FromDate, ToDate);
+            }
+              
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+         return issuesList;
+        }
+       public string AddIssuesLogic(Issue issue)
+        {
+
+           string result ="";
+            try
+            {
+                result = repositry.AddIssue(issue);
+              }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+       }
+      
+           public bool UpdateIssueobjectLogic(Issue issue)
+        {
+            bool isUpdated = false;
+            try
+            {
+                isUpdated = repositry.UpdateIssueobject(issue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return isUpdated;
+        }
+
         public List<Employee> GetAllEmployeesLogic()
         {
             List<Employee> Lst = null;
@@ -100,10 +169,13 @@ namespace BugTrackerBL
             try
             {
                 projList = repositry.GetAllProjects();
+
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+
+
 
 
             }
@@ -158,11 +230,13 @@ namespace BugTrackerBL
             try
             {
                 comment = repositry.DeleteCommentById(commentId);
+
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
+
             return comment;
         }
 
@@ -179,6 +253,7 @@ namespace BugTrackerBL
             }
             return commentObj;
         }
+
 
     }
 }

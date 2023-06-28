@@ -36,6 +36,416 @@ namespace BugTrackerDAL
         {
             public int IdentityValue { get; set; }
         }
+
+
+        public List<Issue> GetIssue(string IssueId)
+        {
+            List<Issue> issuesList = null;
+            try
+            {
+                issuesList = (
+                    from c in context.Issues
+                    where c.IssueId == IssueId
+                    select c
+                    ).ToList();
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching the issue.", ex);
+            }
+            return issuesList;
+        }
+        public List<Issue> GetIssuesbyProject(string ProjectId)
+        {
+            List<Issue> issuesList = null;
+            try
+            {
+                issuesList = (
+                    from c in context.Issues
+                    where c.ProjectId == ProjectId
+                    select c
+                    ).ToList();
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching the issues.", ex);
+            }
+            return issuesList;
+        }
+        public List<Issue> GetIssuesbyTimePeriod(string ProjectId,DateTime FromDate,DateTime ToDate) { 
+            List<Issue> issuesList = null;
+            try
+            {
+                issuesList = (from i in context.Issues where i.Dateidentified >= FromDate && i.Dateidentified <= ToDate select i).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching the issues.", ex);
+            }
+            return issuesList;
+        
+        }
+        public string AddIssue(Issue issue)
+        {
+            string result = "";
+            try
+            {
+                    if (issue.AssignTo > 0 && issue.Identfiedemp > 0)
+                    {
+                        var store = (from p in context.Employees
+                                     where p.EmpId == issue.AssignTo
+                                     select p).First();
+                        var iden = (from p in context.Employees
+                                    where p.EmpId == issue.Identfiedemp
+                                    select p).First();
+                        int f = 0;
+                        if (store.ProjectId == issue.ProjectId && iden.ProjectId == issue.ProjectId)//checking wether assigned employee and identified employee belongs to same project or not
+                        {
+                            f = f + 1;
+                        }
+                        if (f == 0)
+                        {
+                            throw new Exception("Assigned Employee or Identified Employee is not associated with this project");
+                        }
+                        else
+                        {
+                        try
+                        {
+                            var increment = (from p in context.Issues
+                                             where p.ProjectId == issue.ProjectId
+                                             orderby p.IssueId descending
+                                             select p).First();
+                            int b = (increment.IssueId).Length;
+                            int a=(issue.ProjectId).Length;
+                            string s = (increment.IssueId).Substring(a,b-a);
+                            int c=Convert.ToInt32(s);
+                            c = c + 1;
+                            s=Convert.ToString(c);
+                            a = s.Length;
+                            string newstring = "";
+                            for (b = 4; b < a; b--)
+                            {
+                                newstring = newstring + "0";
+                            }
+                            newstring = newstring + s;
+                            issue.IssueId = issue.ProjectId + newstring;
+
+                        }
+                        catch(Exception ex)
+                        {
+                            issue.IssueId= issue.ProjectId+"0001";
+                        }
+                        if(issue.IssueId== issue.ProjectId + "0001")
+                        {
+
+                            issue.LinkToParent = null;
+                        }
+                        else
+                        {
+                            var increment = (from p in context.Issues
+                                         where p.ProjectId == issue.ProjectId
+                                         orderby p.IssueId descending
+                                         select p).First();
+                            issue.LinkToParent = increment.IssueId;
+                        }
+                        issue.Targetdate = null;
+                            context.Add(issue);
+                            var temp = (from p in context.Projects
+                                        where p.ProjectId == issue.ProjectId
+                                        select p).First();
+                            temp.TotalIssues = temp.TotalIssues + 1;
+                            if (issue.Priority == "P3")
+                            {
+                                temp.LowPriorityIssues = temp.LowPriorityIssues + 1;
+                            }
+                            else if (issue.Priority == "P2")
+                            {
+                                temp.MediumPriorityIssues = temp.MediumPriorityIssues + 1;
+                            }
+                            else
+                            {
+                                temp.HighPriorityIssues = temp.HighPriorityIssues + 1;
+                            }
+                            if (issue.Seviority == "S1")
+                            {
+                                temp.S1seviourty = temp.S1seviourty + 1;
+                            }
+                            else if (issue.Seviority == "S2")
+                            {
+                                temp.S2seviourty = temp.S2seviourty + 1;
+                            }
+                            else if (issue.Seviority == "S3")
+                            {
+                                temp.S3seviourty = temp.S3seviourty + 1;
+                            }
+                            else
+                            {
+                                temp.S4seviourty = temp.S4seviourty + 1;
+                            }
+                            context.SaveChanges();
+                            result = issue.IssueId;
+                            return result;
+                        }
+                    }
+                    else if ((issue.AssignTo == null || issue.AssignTo == 0) && issue.Identfiedemp > 0)
+                    {
+                        var iden = (from p in context.Employees
+                                    where p.EmpId == issue.Identfiedemp
+                                    select p).First();
+                        int f = 0;
+                        if (iden.ProjectId == issue.ProjectId)
+                        {
+                            f = f + 1;
+                        }
+                        if (f == 0)
+                        {
+                            throw new Exception("Identified Employee is not associated with this project.");
+                        }
+                        else
+                        {
+                        try
+                        {
+                            var increment = (from p in context.Issues
+                                             where p.ProjectId == issue.ProjectId
+                                             orderby p.IssueId descending
+                                             select p).First();
+                            int b = (increment.IssueId).Length;
+                            int a = (issue.ProjectId).Length;
+                            string s = (increment.IssueId).Substring(a, b - a);
+                            int c = Convert.ToInt32(s);
+                            c = c + 1;
+                            s = Convert.ToString(c);
+                            a = s.Length;
+                            string newstring = "";
+                            for (b = 4; b > a; b--)
+                            {
+                                newstring = newstring + "0";
+                            }
+                            newstring = newstring + s;
+                            issue.IssueId = issue.ProjectId + newstring;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            issue.IssueId = issue.ProjectId + "0001";
+                        }
+                        if (issue.IssueId == issue.ProjectId + "0001")
+                        {
+
+                            issue.LinkToParent = null;
+                        }
+                        else
+                        {
+                            var increment = (from p in context.Issues
+                                             where p.ProjectId == issue.ProjectId
+                                             orderby p.IssueId descending
+                                             select p).First();
+                            issue.LinkToParent = increment.IssueId;
+                        }
+                        if (issue.AssignTo == 0)
+                            {
+                                issue.AssignTo = null;
+                            }
+                        issue.Targetdate = null;
+
+                            context.Add(issue);
+                            var temp = (from p in context.Projects
+                                        where p.ProjectId == issue.ProjectId
+                                        select p).First();//Updating project table Acccordingly
+                            temp.TotalIssues = temp.TotalIssues + 1;
+                            if (issue.Priority == "P3")
+                            {
+                                temp.LowPriorityIssues = temp.LowPriorityIssues + 1;
+                            }
+                            else if (issue.Priority == "P2")
+                            {
+                                temp.MediumPriorityIssues = temp.MediumPriorityIssues + 1;
+                            }
+                            else
+                            {
+                                temp.HighPriorityIssues = temp.HighPriorityIssues + 1;
+                            }
+                            if (issue.Seviority == "S1")
+                            {
+                                temp.S1seviourty = temp.S1seviourty + 1;
+                            }
+                            else if (issue.Seviority == "S2")
+                            {
+                                temp.S2seviourty = temp.S2seviourty + 1;
+                            }
+                            else if (issue.Seviority == "S3")
+                            {
+                                temp.S3seviourty = temp.S3seviourty + 1;
+                            }
+                            else
+                            {
+                                temp.S4seviourty = temp.S4seviourty + 1;
+                            }
+
+                            context.SaveChanges();
+                            result = issue.IssueId;
+                            return result;
+                        }
+                    }
+                    else if (issue.Identfiedemp < 0 || issue.AssignTo < 0)
+                    {
+                        throw new Exception("Identified Employee or Assigned Employee is not valid");
+                    }
+                else
+                {
+                    return result;
+                }
+              
+         }
+        public bool UpdateIssueobject(Issue issue)
+        {
+            bool isUpdated = false;
+            try
+            {
+                Issue? issue1 = (from c in context.Issues
+                                 where c.IssueId == issue.IssueId
+                                 select c).FirstOrDefault();
+                if (issue1 != null)
+                {
+
+                    issue1.IssueId = issue.IssueId;
+                    issue1.ProjectId = issue.ProjectId;
+                    issue1.ShortDescription = issue.ShortDescription;
+                    issue1.IssueType = issue.IssueType;
+                    issue1.ModuleName = issue.ModuleName;
+                    issue1.Description = issue.Description;
+                    issue1.Priority = issue.Priority;
+                    if (issue.Targetdate !=null)
+                    {
+                        if (issue.Targetdate >issue1.Dateidentified)//Checking updated target date is valid or not
+                        {
+                            issue1.Targetdate = issue.Targetdate;
+                        }
+                        else
+                        {
+                            throw new Exception("Target date should be valid");
+                        }
+                    }
+                    
+                    issue1.Ressummary = issue.Ressummary;
+                    if (issue.AssignTo > 0)//Checking wether updated assigned Employee belongs to same project or not
+                    {
+                        var store = (from p in context.Employees
+                                     where p.EmpId == issue.AssignTo
+                                     select p).First();
+
+                        int f = 0;
+                        if (store.ProjectId == issue.ProjectId)
+                        {
+                            f = f + 1;
+                        }
+                        if (f == 0)
+                        {
+                            throw new Exception("Assigned Employee is not associated with this project");
+                        }
+                        else
+                        {
+                            issue1.AssignTo = issue.AssignTo;
+                        }
+                    }
+                    else if (issue.AssignTo == null)
+                    {
+                        issue1.AssignTo = issue.AssignTo;//Assigned to null case
+                    }
+                    else if (issue.AssignTo == 0)
+                    {
+                        issue1.AssignTo = null;
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Assigned Employee");
+                    }
+
+                    issue1.StepsToReproduce = issue.StepsToReproduce;
+                    issue1.TestingType = issue.TestingType;
+                    
+                    if (issue.Status == "Close" && issue1.Status != "Close")//updating actual date based on upcoming status
+                    {
+                        issue1.Actualdate = DateTime.Now;
+
+                    }
+                    if (issue1.Status == "Close" && issue.Status != "Close")
+                    {
+                        issue1.Actualdate = null;
+                    }
+                    if (issue1.Status != "Open" && issue.Status == "Open")//Reopening the Issue case
+                    {
+                        issue1.IterationNumber = issue1.IterationNumber + 1;
+                    }
+
+                    issue1.Status = issue.Status;
+                    issue1.Category = issue.Category;
+                    issue1.Images = issue.Images;
+                    issue1.Seviority = issue.Seviority;
+                    issue1.Lastmodifydoneemp = issue.Lastmodifydoneemp;
+                    issue1.Lastmodifydonedate = issue.Lastmodifydonedate;
+                    var a = (from p in context.Issues where p.ProjectId == issue.ProjectId select p).ToList();
+                    int l = 0, m = 0, h = 0, s1 = 0, s2 = 0, s3 = 0, s4 = 0;
+                    foreach (var b in a)
+                    {
+                        if (b.Priority == "P3")
+                        {
+                            l = l + 1;
+                        }
+                        if (b.Priority == "P2")
+                        {
+                            m = m + 1;
+                        }
+                        if (b.Priority == "P1")
+                        {
+                            h = h + 1;
+                        }
+                        if (b.Seviority == "S1")
+                        {
+                            s1 = s1 + 1;
+                        }
+                        if (b.Seviority == "S2")
+                        {
+                            s2 = s2 + 1;
+                        }
+                        if (b.Seviority == "S3")
+                        {
+                            s3 = s3 + 1;
+                        }
+                        if (b.Seviority == "S4")
+                        {
+                            s4 = s4 + 1;
+                        }
+                    }
+                    Project? project1 = (from p in context.Projects where p.ProjectId == issue.ProjectId select p).FirstOrDefault();
+                    project1.LowPriorityIssues = l;
+                    project1.HighPriorityIssues = h;
+                    project1.MediumPriorityIssues = m;
+                    project1.S1seviourty = s1;
+                    project1.S2seviourty = s2;
+                    project1.S3seviourty = s3;
+                    project1.S4seviourty = s4;
+                    context.SaveChanges();
+                    isUpdated = true;
+                }
+                else
+                {
+                    throw new Exception("Corresponding Issue not present to update");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while Updating the issue.", ex);
+            }
+            return isUpdated;
+        }
         public Project AddProject(Project project)
         {
 
@@ -131,13 +541,14 @@ namespace BugTrackerDAL
                 catch (Exception e)
                 {
                     throw new Exception("Comment with this ID doesn't exist");
+            
                 }
-
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
             return comment;
         }
         public Comment UpdateCommentById(int commentId, string comment)
