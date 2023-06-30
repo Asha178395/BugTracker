@@ -255,6 +255,21 @@ namespace BugTrackerBL
             return commentObj;
         }
 
+        public Project GetProjectbyIdBL(string projectId)
+        {
+            Project project = null;
+            try
+            {
+                project = repositry.GetProjectByIdDAL(projectId);
+            }
+            catch(Exception e)
+            {
+                throw new Exception (e.Message);
+            }
+            return project;
+        }
+
+
 
     }
 }
