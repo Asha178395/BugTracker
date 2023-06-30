@@ -2,9 +2,9 @@
 {
     public class OutputProject
     {
-        public string ProjectId { get; set; } = null!;
+        public string Projectid { get; set; } = null!;
 
-        public string ProjectName { get; set; } = null!;
+        public string Projectname { get; set; } = null!;
 
         public int? TotalIssues { get; set; }
 

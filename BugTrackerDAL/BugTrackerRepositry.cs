@@ -707,5 +707,23 @@ namespace BugTrackerDAL
             return result;
         }
 
+             
+        public Project GetProjectByIdDAL(string projectId)
+        {
+            Project project = null;
+            try
+            {
+                project = (from c in context.Projects
+                           where c.ProjectId == projectId
+                           select c).First();
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Project doesn't exist with this ID");
+            }
+            return project;
+        }
+
     }
 }
