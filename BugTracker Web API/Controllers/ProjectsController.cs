@@ -125,7 +125,10 @@ namespace WebApplication1.Controllers
             }
             return Json(outputProject);
         }
-
+        /// <summary>
+        /// Fetch Project Name by ProjectId
+        /// </summary>
+        
         [HttpGet]
 
         [ProducesResponseType(typeof(OutputProjectById), 200)]
