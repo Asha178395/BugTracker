@@ -14,10 +14,6 @@ namespace BugTracker.Models
 
         [Required]
         public string Projectid { get; set; }
-
-        public string? Username { get; set; }
-
-        public string? Password { get; set; }
      }
 
 }
