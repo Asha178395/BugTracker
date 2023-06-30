@@ -122,8 +122,6 @@ namespace BugTracker_Web_API.Controllers
             Employee e = new Employee();
             e.EmpName = emp.EmpName;
             e.ProjectId = emp.Projectid;
-            e.UserName = emp.Username;
-            e.Password = emp.Password;
             Employee e2 = new Employee();
             OutputEmployee employee = new OutputEmployee();
             try
