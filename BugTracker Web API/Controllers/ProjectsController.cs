@@ -1,4 +1,5 @@
 ﻿
+using BugTracker_Web_API.Models;
 using BugTrackerBL;
 using BugTrackerDAL.Models;
 using IssueTracking_web_API.Models;
@@ -41,8 +42,8 @@ namespace WebApplication1.Controllers
                 foreach (Project project in projList)
                 {
                     OutputProject outputProject = new OutputProject();
-                    outputProject.ProjectId = project.ProjectId;
-                    outputProject.ProjectName = project.ProjectName;
+                    outputProject.Projectid = project.ProjectId;
+                    outputProject.Projectname = project.ProjectName;
                     outputProject.TotalIssues = project.TotalIssues;
                     outputProject.MediumPriorityIssues = project.MediumPriorityIssues;
                     outputProject.LowPriorityIssues = project.LowPriorityIssues;
@@ -98,8 +99,8 @@ namespace WebApplication1.Controllers
             try
             {
                 project2 = buglogic.AddProjectBL(project1);
-                outputProject.ProjectId = project2.ProjectId;
-                outputProject.ProjectName = project2.ProjectName;
+                outputProject.Projectid = project2.ProjectId;
+                outputProject.Projectname = project2.ProjectName;
                 outputProject.TotalIssues = project2.TotalIssues;
                 outputProject.HighPriorityIssues = project2.HighPriorityIssues;
                 outputProject.MediumPriorityIssues  = project2.MediumPriorityIssues;
@@ -123,6 +124,42 @@ namespace WebApplication1.Controllers
                 return Json(errorResponse);
             }
             return Json(outputProject);
+        }
+        /// <summary>
+        /// Fetch Project Name by ProjectId
+        /// </summary>
+        
+        [HttpGet]
+
+        [ProducesResponseType(typeof(OutputProjectById), 200)]
+        [Produces("application/json")]
+        public JsonResult GetProjectById(string projectid)
+        {
+            BugTrackerLogic buglogic = new BugTrackerLogic();
+
+            Project projDetails = null;
+            OutputProjectById outputProject = new OutputProjectById();
+            try
+            {
+
+                projDetails= buglogic.GetProjectbyIdBL(projectid);
+                outputProject.Projectname = projDetails.ProjectName;
+
+            }
+            catch (Exception e)
+            {
+                var errorResponse = new
+                {
+                    error = "Error while fetching projects data from database",
+                    message = e.Message
+                };
+
+
+
+                return Json(errorResponse);
+            }
+            return Json(outputProject);
+
         }
     }
 }
