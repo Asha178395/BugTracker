@@ -24,7 +24,7 @@ namespace BugTracker_Web_API.Models
         [RegularExpression("^(P1|P2|P3)$", ErrorMessage = "Priority must be 'P1' or 'P2' or 'P3'.")]
         public string Priority { get; set; } = null!;
 
-        public DateTime Targetdate { get; set; }
+        public DateTime? Targetdate { get; set; }
 
         
 
