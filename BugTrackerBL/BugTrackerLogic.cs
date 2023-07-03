@@ -283,6 +283,20 @@ namespace BugTrackerBL
             return issues;
 
         }
+        public int noPossiblePagesByFiltersLogic(string projectId, string status, string priority, string seviourity, int identifiedemp, int assignto,int issuesperpage)
+        {
+            int result = 0;
+            try
+            {
+                result= repositry.GetNoPossiblePages(projectId, status, priority, seviourity, identifiedemp, assignto, issuesperpage);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return result;
+
+        }
 
 
 

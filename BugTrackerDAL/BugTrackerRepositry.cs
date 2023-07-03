@@ -899,6 +899,76 @@ namespace BugTrackerDAL
                 throw new Exception(ex.Message);
             }
         }
+        public int GetNoPossiblePages(string projectId, string status, string priority, string seviourity, int identifiedemp, int assignto, int issuesperpage)
+        {
+            List<Issue> issues = null;
+            List<string> statusList = null;
+            List<string> priorityList = null;
+            List<string> seviorityList = null;
+            if (status == "Any")
+            {
+                statusList = new List<string> { "Open", "Close", "Hold", "In Progress" };
+            }
+            else
+            {
+                statusList = new List<string>();
+                statusList.Add(status);
+            }
+            if (priority == "Any")
+            {
+                priorityList = new List<string> { "P1", "P2", "P3" };
+            }
+            else
+            {
+                priorityList = new List<string>();
+                priorityList.Add(priority);
+            }
+            if (seviourity == "Any")
+            {
+                seviorityList = new List<string> { "S1", "S2", "S3", "S4" };
+            }
+            else
+            {
+                seviorityList = new List<string>();
+                seviorityList.Add(seviourity);
+            }
+            try
+            {
+                var projectList = (from p in context.Issues where p.ProjectId == projectId select p).ToList();
+                List<Issue> res = null;
+                if (identifiedemp != -1 && assignto != -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                }
+                else if (identifiedemp == -1 && assignto == -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) select p).ToList();
+                }
+                else if (assignto == -1 && identifiedemp != -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp select p).ToList();
+                }
+                else
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                }
+                int a = res.Count;
+                int b = a / issuesperpage;
+                int c=a% issuesperpage;
+                if (c == 0)
+                {
+                    return b;
+                }
+                else
+                {
+                    return b + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }
