@@ -724,6 +724,181 @@ namespace BugTrackerDAL
             }
             return project;
         }
+        //public List<Issue> GetIssuesPagination(string projectId, string status, string priority, string seviourity, int identifiedemp, int assignto, int pageno, int issuesperpage)
+        //{
+        //    List<Issue> issues = null;
+        //    var projectissues = (from p in context.Issues where p.ProjectId == projectId select p).ToList();
+        //    if (status != "Any")
+        //    {
+        //        if (priority != "Any")
+        //        {
+        //            if(seviourity != "Any")
+        //            {
+        //                if (identifiedemp != -1)
+        //                {
+        //                    if (assignto != -1)
+        //                    {
+        //                        var res = (from p in projectissues where p.Status == status && p.Priority == priority && p.Seviority == seviourity && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+        //                        int a = res.Count;
+        //                        int b = (pageno - 1) * issuesperpage;
+        //                        int c = a - b;
+        //                        int d = c / issuesperpage;
+        //                        int display = -1;
+        //                        if (d > 0)
+        //                        {
+        //                            display = issuesperpage;
+        //                        }
+        //                        else
+        //                        {
+        //                            display = c % issuesperpage;
+        //                        }
+        //                        issues =res.GetRange(a,display);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (seviourity != "Any")
+        //            {
+        //                if (identifiedemp != -1)
+        //                {
+        //                    if (assignto != -1)
+        //                    {
+        //                        var res = (from p in projectissues where p.Status == status && p.Seviority == seviourity && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+        //                        int a = res.Count;
+        //                        int b = (pageno - 1) * issuesperpage;
+        //                        int c = a - b;
+        //                        int d = c / issuesperpage;
+        //                        int display = -1;
+        //                        if (d > 0)
+        //                        {
+        //                            display = issuesperpage;
+        //                        }
+        //                        else
+        //                        {
+        //                            display = c % issuesperpage;
+        //                        }
+        //                        issues = res.GetRange(a, display);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (priority != "Any")
+        //        {
+        //            if (seviourity != "Any")
+        //            {
+        //                if (identifiedemp != -1)
+        //                {
+        //                    if (assignto != -1)
+        //                    {
+        //                        var res = (from p in projectissues where p.Priority == priority && p.Seviority == seviourity && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+        //                        int a = res.Count;
+        //                        int b = (pageno - 1) * issuesperpage;
+        //                        int c = a - b;
+        //                        int d = c / issuesperpage;
+        //                        int display = -1;
+        //                        if (d > 0)
+        //                        {
+        //                            display = issuesperpage;
+        //                        }
+        //                        else
+        //                        {
+        //                            display = c % issuesperpage;
+        //                        }
+        //                        issues = res.GetRange(a, display);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return issues;
+        //}
+        public List<Issue> GetIssuesPagination(string projectId, string status, string priority, string seviourity, int identifiedemp, int assignto, int pageno, int issuesperpage)
+        {
+            List<Issue> issues = null;
+            List<string> statusList = null;
+            List<string> priorityList = null;
+            List<string> seviorityList = null;
+            if (status == "Any")
+            {
+               statusList = new List<string> { "Open", "Close", "Hold", "In Progress" };
+            }
+            else
+            {
+                statusList = new List<string>();
+                statusList.Add(status);
+            }
+            if (priority == "Any")
+            {
+                priorityList = new List<string> { "P1", "P2", "P3" };
+            }
+            else
+            {
+               priorityList = new List<string>();
+                priorityList.Add(priority);
+            }
+            if (seviourity == "Any")
+            {
+                seviorityList = new List<string> { "S1", "S2", "S3","S4" };
+            }
+            else
+            {
+                seviorityList = new List<string>();
+                seviorityList.Add(seviourity);
+            }
+            try { 
+                var projectList = (from p in context.Issues where p.ProjectId == projectId select p).ToList();
+                List<Issue> res = null;
+                if (identifiedemp != -1 && assignto != -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                }
+                else if (identifiedemp == -1 && assignto == -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) select p).ToList();
+                }
+                else if (assignto == -1 && identifiedemp != -1)
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp select p).ToList();
+                }
+                else
+                {
+                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                }
+                int a = res.Count;
+                int b = (pageno - 1) * issuesperpage;
+                int c = a - b;
+                int d = c / issuesperpage;
+                int display = -1;
+                if (d > 0)
+                {
+                    display = issuesperpage;
+                }
+                else
+                {
+                    display = c % issuesperpage;
+                   
+                }
+                try
+                {
+                    issues = res.GetRange(b, display);
+                }
+                catch(Exception e)
+                {
+                    throw new Exception("Page number is not valid");
+                }
+
+                return issues;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using BugTrackerDAL;
+﻿using Azure;
+using BugTrackerDAL;
 using BugTrackerDAL.Models;
 
 namespace BugTrackerBL
@@ -267,6 +268,20 @@ namespace BugTrackerBL
                 throw new Exception (e.Message);
             }
             return project;
+        }
+        public List<Issue> issuesPaginationByFiltersLogic(string projectId,string status,string priority,string seviourity,int identifiedemp, int assignto,int pageno,int issuesperpage)
+        {
+            List<Issue> issues = null;
+            try
+            {
+                issues = repositry.GetIssuesPagination(projectId, status, priority, seviourity, identifiedemp, assignto, pageno, issuesperpage);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return issues;
+
         }
 
 

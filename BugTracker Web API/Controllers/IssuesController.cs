@@ -237,5 +237,33 @@ namespace BugTracker_Web_API.Controllers
 
 
         }
+        ///<summary>
+        ///Fetches Issues Corresponding to given project Id,filters,page number and number of issues per page
+        ///</summary>
+        /// <response code="200">Fetch Succesfull</response>
+        /// <response code="500">Server Error</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<Issue>), 200)]
+        [Produces("application/json")]
+        public JsonResult issuesPaginationByFilters(string projectId,string status,string priority,string seviourity,int identifiedemp,int assignto,int pageno,int issuesperpage)
+        {
+            List<Issue> issues = null;
+            try
+            {
+                issues = cartLogic.issuesPaginationByFiltersLogic(projectId, status, priority, seviourity, identifiedemp, assignto, pageno, issuesperpage);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    error = "An error occurred while updating the issues.",
+                    message = ex.Message
+                };
+
+                return Json(errorResponse);
+            }
+            return Json(issues);
+        }
+
     }
 }
