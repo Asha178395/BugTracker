@@ -82,7 +82,7 @@ namespace BugTrackerDAL
             List<Issue> issuesList = null;
             try
             {
-                issuesList = (from i in context.Issues where i.Dateidentified >= FromDate && i.Dateidentified <= ToDate select i).ToList();
+                issuesList = (from i in context.Issues where i.Dateidentified >= FromDate && i.Dateidentified <= ToDate && i.ProjectId==ProjectId select i).ToList();
             }
             catch (Exception ex)
             {
