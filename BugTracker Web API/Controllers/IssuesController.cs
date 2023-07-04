@@ -119,7 +119,7 @@ namespace BugTracker_Web_API.Controllers
         [Consumes("application/json")]
         public JsonResult AddIssue(InputIssue issue)
         {
-
+            
             string? result = "";
             try
             {
@@ -158,7 +158,7 @@ namespace BugTracker_Web_API.Controllers
                     issue1.Lastmodifydoneemp = issue.Identfiedemp;
                    
 
-                    result = cartLogic.AddIssuesLogic(issue1);
+                    result= cartLogic.AddIssuesLogic(issue1);
                     //issue1.IssueId = result;
                     //return Json(result);
                     return Json(true);

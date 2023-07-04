@@ -54,11 +54,10 @@ namespace BugTrackerBL
         }
        public string AddIssuesLogic(Issue issue)
         {
-
            string result ="";
             try
             {
-                result = repositry.AddIssue(issue);
+                result= repositry.AddIssue(issue);
               }
             catch (Exception e)
             {
