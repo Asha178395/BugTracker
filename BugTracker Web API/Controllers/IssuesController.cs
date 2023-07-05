@@ -135,18 +135,7 @@ namespace BugTracker_Web_API.Controllers
                     issue1.Description = issue.Description;
                     issue1.Identfiedemp = issue.Identfiedemp;
                     issue1.Dateidentified = DateTime.Now;
-                    if (issue.Priority == "High")
-                    {
-                        issue1.Priority = "P1";
-                    }
-                    else if (issue.Priority == "Medium")
-                    {
-                        issue1.Priority = "P2";
-                    }
-                    else
-                    {
-                        issue1.Priority = "P3";
-                    }
+                    issue1.Priority = issue.Priority;
                     issue1.AssignTo = issue.AssignTo;
                     issue1.TestingType = issue.TestingType;
                     issue1.IterationNumber = 1;
