@@ -33,8 +33,10 @@ namespace BugTracker_Web_API.Models
         [Required(ErrorMessage = "Seviority is required.")]
         [RegularExpression("^(S1|S2|S3|S4)$", ErrorMessage = "Seviority must be 'S1' or 'S2' or 'S3' or 'S4'.")]
          public string Seviority { get; set; } = null!;
+        public string? LinkToParent { get; set; }
 
-        
+
+
 
     }
 }

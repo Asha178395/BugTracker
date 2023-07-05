@@ -157,7 +157,7 @@ namespace BugTracker_Web_API.Controllers
                     issue1.Lastmodifydonedate = DateTime.Now;
                     issue1.Lastmodifydoneemp = issue.Identfiedemp;
                    
-
+                    issue1.LinkToParent = issue.LinkToParent;
                     result= cartLogic.AddIssuesLogic(issue1);
                     //issue1.IssueId = result;
                     //return Json(result);

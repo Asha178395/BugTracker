@@ -142,19 +142,19 @@ namespace BugTrackerDAL
                         {
                             issue.IssueId= issue.ProjectId+"0001";
                         }
-                        if(issue.IssueId== issue.ProjectId + "0001")
-                        {
+                        //if(issue.IssueId== issue.ProjectId + "0001")
+                        //{
 
-                            issue.LinkToParent = null;
-                        }
-                        else
-                        {
-                            var increment = (from p in context.Issues
-                                         where p.ProjectId == issue.ProjectId
-                                         orderby p.IssueId descending
-                                         select p).First();
-                            issue.LinkToParent = increment.IssueId;
-                        }
+                        //    issue.LinkToParent = null;
+                        //}
+                        //else
+                        //{
+                        //    var increment = (from p in context.Issues
+                        //                 where p.ProjectId == issue.ProjectId
+                        //                 orderby p.IssueId descending
+                        //                 select p).First();
+                        //    issue.LinkToParent = increment.IssueId;
+                        //}
                         issue.Targetdate = null;
                             context.Add(issue);
                             var temp = (from p in context.Projects
@@ -236,19 +236,19 @@ namespace BugTrackerDAL
                         {
                             issue.IssueId = issue.ProjectId + "0001";
                         }
-                        if (issue.IssueId == issue.ProjectId + "0001")
-                        {
+                        //if (issue.IssueId == issue.ProjectId + "0001")
+                        //{
 
-                            issue.LinkToParent = null;
-                        }
-                        else
-                        {
-                            var increment = (from p in context.Issues
-                                             where p.ProjectId == issue.ProjectId
-                                             orderby p.IssueId descending
-                                             select p).First();
-                            issue.LinkToParent = increment.IssueId;
-                        }
+                        //    issue.LinkToParent = null;
+                        //}
+                        //else
+                        //{
+                        //    var increment = (from p in context.Issues
+                        //                     where p.ProjectId == issue.ProjectId
+                        //                     orderby p.IssueId descending
+                        //                     select p).First();
+                        //    issue.LinkToParent = increment.IssueId;
+                        //}
                         if (issue.AssignTo == 0)
                             {
                                 issue.AssignTo = null;
@@ -856,7 +856,14 @@ namespace BugTrackerDAL
                 List<Issue> res = null;
                 if (identifiedemp != -1 && assignto != -1)
                 {
-                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                    if (assignto != 0)
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                    }
+                    else
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == null select p).ToList();
+                    }
                 }
                 else if (identifiedemp == -1 && assignto == -1)
                 {
@@ -868,7 +875,14 @@ namespace BugTrackerDAL
                 }
                 else
                 {
-                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                    if (assignto != 0)
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                    }
+                    else
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == null select p).ToList();
+                    }
                 }
                 int a = res.Count;
                 int b = (pageno - 1) * issuesperpage;
@@ -939,7 +953,14 @@ namespace BugTrackerDAL
                 List<Issue> res = null;
                 if (identifiedemp != -1 && assignto != -1)
                 {
-                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                    if (assignto != 0)
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == assignto select p).ToList();
+                    }
+                    else
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.Identfiedemp == identifiedemp && p.AssignTo == null select p).ToList();
+                    }
                 }
                 else if (identifiedemp == -1 && assignto == -1)
                 {
@@ -951,8 +972,16 @@ namespace BugTrackerDAL
                 }
                 else
                 {
-                    res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                    if (assignto != 0)
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == assignto select p).ToList();
+                    }
+                    else
+                    {
+                        res = (from p in projectList where statusList.Contains(p.Status) && priorityList.Contains(p.Priority) && seviorityList.Contains(p.Seviority) && p.AssignTo == null select p).ToList();
+                    }
                 }
+
                 int a = res.Count;
                 int b = a / issuesperpage;
                 int c=a% issuesperpage;
