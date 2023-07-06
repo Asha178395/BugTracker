@@ -128,48 +128,46 @@ namespace WebAPIComments.Controllers
         /// <response code="500">Server Error</response>
         /// <response code="400">Bad request</response>
 
-        
-        [ProducesResponseType(typeof(NewComment), 200)]
+        [ProducesResponseType(typeof(List<NewComment>), 200)]
         [Produces("application/json")]
-        
 
         [HttpDelete]
         public JsonResult DeleteComment(int commentId)
         {
-            Comment comment = new Comment();
-            NewComment newComment = new NewComment();
+            List<Comment> comment = null;
+            List<NewComment> commentsList = new List<NewComment>();
             try
             {
                 comment = bLObject.DeleteCommentLogic(commentId);
-                newComment.CommentId = comment.CommentId;
-                newComment.Comment1 = comment.Comment1;
-                newComment.IssueId = comment.IssueId;
-                newComment.EmpId = comment.EmpId;
-                newComment.CommentedOn = comment.CommentedOn;
-
-
-
+                foreach (Comment obj in comment)
+                {
+                    NewComment newComment = new NewComment();
+                    newComment.CommentId = obj.CommentId;
+                    newComment.Comment1 = obj.Comment1;
+                    newComment.IssueId = obj.IssueId;
+                    newComment.EmpId = obj.EmpId;
+                    newComment.CommentedOn = obj.CommentedOn;
+                    commentsList.Add(newComment);
+                }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return Json(newComment);
-
-
+            return Json(commentsList);
 
         }
 
 
-       
+
         ///<summary>
         /// Update or Edit  a comment associated with a specific identifier.
-         ///</summary>
+        ///</summary>
 
-         /// <response code="500">Server Error</response>
-         /// <response code="400">Bad request</response>
+        /// <response code="500">Server Error</response>
+        /// <response code="400">Bad request</response>
 
-        
+
         [ProducesResponseType(typeof(NewComment), 200)]
         [Consumes("application/json")]
         [Produces("application/json")]
