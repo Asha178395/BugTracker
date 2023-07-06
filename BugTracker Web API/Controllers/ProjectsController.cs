@@ -93,7 +93,7 @@ namespace WebApplication1.Controllers
 
             Project project1 = new Project();
             project1.ProjectName = project.ProjectName;
-            project1.ProjectId = project.ProjectId;
+            //project1.ProjectId = project.ProjectId;
             Project project2 = null;
             OutputProject outputProject = new OutputProject();
             try

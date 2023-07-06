@@ -455,22 +455,73 @@ namespace BugTrackerDAL
         public Project AddProject(Project project)
         {
 
-            var result1 = (from p in context.Projects
-                           where p.ProjectName == project.ProjectName
-                           select p).ToList();
-            if (result1.Count() > 0)
+           // var result1 = (from p in context.Projects
+           //                where p.ProjectName == project.ProjectName
+           //                select p).ToList();
+           // if (result1.Count() > 0)
+           // {
+           //     throw new Exception("Project Name Already Exists");
+           // }
+           //try
+           // {
+           //     context.Add(project);
+           //     context.SaveChanges();
+
+           // }
+           // catch (Exception e)
+           // {
+           //     throw new Exception(e.Message);
+           // }
+            //return project;
+            List<string>words=project.ProjectName.Split(' ').ToList();
+            string sub = "";
+            if (words.Count == 1)
             {
-                throw new Exception("Project Name Already Exists");
+                sub= words[0].Substring(0,3);
             }
-           try
+            else
+            {
+                foreach(string word in words)
+                {
+                    sub=sub+ word[0];
+                }
+            }
+            sub=sub.ToUpper();
+            var a=(from p in context.Projects where p.ProjectId.StartsWith(sub) && p.ProjectId.Length==sub.Length+2 orderby p.ProjectId descending select p.ProjectId).FirstOrDefault();
+            string res = "";
+            if (a != null)
+            {
+                string b = a.Substring((sub.Length), (a.Length - sub.Length));
+                try
+                {
+                    int c = Convert.ToInt32(b);
+                    c = c + 1;
+                    string z = Convert.ToString(c);
+                    if (z.Length < 2)
+                    {
+                        z = "0" + z;
+                    }
+                    res = sub + z;
+                    
+                }
+                catch (Exception ex)
+                {
+                    res = sub + "01";
+                }
+            }
+            else
+            {
+                res = sub + "01";
+            }
+            project.ProjectId= res;
+            try
             {
                 context.Add(project);
                 context.SaveChanges();
-
             }
-            catch (Exception e)
+            catch(Exception ex)
             {
-                throw new Exception(e.Message);
+                throw new Exception("An error occured while adding the project");
             }
             return project;
         }

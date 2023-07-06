@@ -89,7 +89,7 @@ namespace BugTrackerBL
             }
             catch (Exception e)
             {
-                throw new Exception("e.Message");
+                throw new Exception(e.Message);
             }
             return Lst;
         }
@@ -103,7 +103,7 @@ namespace BugTrackerBL
             }
             catch (Exception e)
             {
-                throw new Exception("e.Message");
+                throw new Exception(e.Message);
             }
             return emp;
         }
@@ -117,7 +117,7 @@ namespace BugTrackerBL
             }
             catch (Exception e)
             {
-                throw new Exception("e.Message");
+                throw new Exception(e.Message);
             }
             return Lst;
         }
@@ -131,7 +131,7 @@ namespace BugTrackerBL
             }
             catch (Exception e)
             {
-                throw new Exception("e.Message");
+                throw new Exception(e.Message);
             }
             return empObject;
         }
@@ -145,7 +145,7 @@ namespace BugTrackerBL
             }
             catch (Exception ex)
             {
-                throw new Exception("e.Message");
+                throw new Exception(ex.Message);
             }
             return result;
         }
@@ -159,7 +159,7 @@ namespace BugTrackerBL
             }
             catch (Exception ex)
             {
-                throw new Exception("e.Message");
+                throw new Exception(ex.Message);
             }
             return result;
         }
