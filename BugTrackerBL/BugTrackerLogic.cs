@@ -225,9 +225,9 @@ namespace BugTrackerBL
             }
             return comments;
         }
-        public Comment DeleteCommentLogic(int commentId)
+        public List<Comment> DeleteCommentLogic(int commentId)
         {
-            Comment comment = null;
+            List<Comment> comment = null;
             try
             {
                 comment = repositry.DeleteCommentById(commentId);

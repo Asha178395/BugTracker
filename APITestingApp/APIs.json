@@ -1,0 +1,144 @@
+{
+  APIs : [
+
+
+    {
+      "endPoint": "https://bugtrackerwebapp123.azurewebsites.net/api/project/GetAllProjects",
+      "method" :  "GET",
+      "input": {},
+      "output": [
+        {
+          "projectid": "10",
+          "projectname": "Issue Tracker",
+          "totalIssues": 1,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 1,
+          "s1seviourty": 1,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "11",
+          "projectname": "CDP",
+          "totalIssues": 0,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 0,
+          "s1seviourty": 0,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "3",
+          "projectname": "DPM",
+          "totalIssues": 0,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 0,
+          "s1seviourty": 0,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "4",
+          "projectname": "Kelvin",
+          "totalIssues": 0,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 0,
+          "s1seviourty": 0,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "5",
+          "projectname": "BPM",
+          "totalIssues": 0,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 0,
+          "s1seviourty": 0,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "CT01",
+          "projectname": "Control Tower",
+          "totalIssues": 5,
+          "highPriorityIssues": 1,
+          "mediumPriorityIssues": 1,
+          "lowPriorityIssues": 3,
+          "s1seviourty": 1,
+          "s2seviourty": 1,
+          "s3seviourty": 0,
+          "s4seviourty": 3
+        },
+        {
+          "projectid": "CTD01",
+          "projectname": "CTD",
+          "totalIssues": 0,
+          "highPriorityIssues": 0,
+          "mediumPriorityIssues": 0,
+          "lowPriorityIssues": 0,
+          "s1seviourty": 0,
+          "s2seviourty": 0,
+          "s3seviourty": 0,
+          "s4seviourty": 0
+        },
+        {
+          "projectid": "JDS01",
+          "projectname": "JDS-Syren",
+          "totalIssues": 11,
+          "highPriorityIssues": 2,
+          "mediumPriorityIssues": 1,
+          "lowPriorityIssues": 8,
+          "s1seviourty": 4,
+          "s2seviourty": 3,
+          "s3seviourty": 2,
+          "s4seviourty": 2
+        }
+      ]
+    },
+
+
+    {
+      "endPoint": "https://bugtrackerwebapp123.azurewebsites.net/api/project/GetProjectById",
+      "method" :  "GET",
+      "input": {
+        "projectid" :  "JDS01"
+      },
+      "output": {
+          "projectname" :  "JDS-Syren"
+      }
+    },
+
+    {
+      "endPoint": "https://bugtrackerwebapp123.azurewebsites.net/api/project/AddProject",
+      "method" :  "POST",
+      "input": {
+        "projectId": "99",
+        "projectName" :  "TestProject"
+      },
+      "output": {
+        "projectid": "99",
+        "projectname": "TestProject",
+        "totalIssues": 0,
+        "highPriorityIssues": 0,
+        "mediumPriorityIssues": 0,
+        "lowPriorityIssues": 0,
+        "s1seviourty": 0,
+        "s2seviourty": 0,
+        "s3seviourty": 0,
+        "s4seviourty": 0
+      }
+    }
+
+  ]
+  
+}

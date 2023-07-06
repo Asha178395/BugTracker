@@ -1,5 +1,6 @@
 ﻿using BugTrackerDAL.Models;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace BugTrackerDAL
 {
@@ -526,9 +527,9 @@ namespace BugTrackerDAL
             }
             return comments;
         }
-        public Comment DeleteCommentById(int commentId)
+        public List<Comment> DeleteCommentById(int commentId)
         {
-
+            List<Comment> result = new List<Comment>();
             Comment comment = null;
             try
             {
@@ -537,11 +538,18 @@ namespace BugTrackerDAL
                     comment = (from c in context.Comments
                                where c.CommentId == commentId
                                select c).First();
+                    result.Add(comment);
+                    var childComments = (from c in context.Comments
+                               where c.ParentCommentId == commentId
+                               select c).ToList();
+                    
                     context.Comments.Remove(comment);
+                    foreach (var childComment in childComments)
+                    {
+                        result.Add(childComment);
+                        context.Comments.Remove(childComment);
+                    }
                     context.SaveChanges();
-
-
-
                 }
                 catch (Exception e)
                 {
@@ -554,7 +562,7 @@ namespace BugTrackerDAL
                 throw new Exception(ex.Message);
             }
 
-            return comment;
+            return result;
         }
         public Comment UpdateCommentById(int commentId, string comment)
         {
