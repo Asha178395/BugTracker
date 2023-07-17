@@ -3,7 +3,8 @@ using BugTracker_Web_API.Models;
 using BugTrackerBL;
 using BugTrackerDAL.Models;
 using IssueTracking_web_API.Models;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace WebApplication1.Controllers
 {
 
     [Route("api/[controller]/[action]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class projectController : Controller
     {

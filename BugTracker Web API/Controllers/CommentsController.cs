@@ -3,7 +3,8 @@ using BugTrackerBL;
 using BugTrackerDAL.Models;
 using IssueTracking_web_API.Models;
 using IssueTracking_Web_API.Models;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace WebAPIComments.Controllers
 {
 
     [Route("api/[controller]/[action]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class comments : Controller
 

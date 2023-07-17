@@ -1,12 +1,16 @@
 ﻿using BugTracker.Models;
 using BugTrackerBL;
 using BugTrackerDAL.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BugTracker_Web_API.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [Authorize(AuthenticationSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{"Google"}")]
     [ApiController]
     public class EmployeesController : Controller
     {
